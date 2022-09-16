@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Секундомер</string>
+    <string name="button1">button1</string>
+    <string name="button2">button2</string>
+
+    <string name="text">00:00</string>
+
+    <string name="for_menu">for_menu111</string>
+
+</resources>
