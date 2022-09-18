@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, Three_chrono.class);
                 startActivity(intent);
                 return true;
+            } case R.id.one_timer: {
+                Intent intent = new Intent(MainActivity.this, One_timer.class);
+                startActivity(intent);
+                return true;
             } default: {
                 return super.onOptionsItemSelected(item);
             }

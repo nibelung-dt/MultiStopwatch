@@ -10,8 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidLessons">
         <activity
-            android:name=".Timer"
-            android:exported="false" />
+            android:name=".One_timer"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".Three_chrono"
             android:exported="false"
