@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private int timeOfInterval = 0;
     private int prevTotalTime = 0;
 
-
+    //коммит 2
+    private int xyz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
