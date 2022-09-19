@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private int secondsInterval;
     private int timeOfInterval = 0;
     private int prevTotalTime = 0;
+    private String textOfStart1 = "Старт";
+    private String textOfIntervalReset1 = "Интервал";
 
-    //коммит 2
-    private int xyz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +51,18 @@ public class MainActivity extends AppCompatActivity {
             TextView for_interval = (TextView) findViewById(R.id.for_interval);
             for_interval.setText(intervals);
             for_interval.setMovementMethod(new ScrollingMovementMethod());
+
+            textOfStart1 = savedInstanceState.getString("textOfStart1");
+            Button start1 = (Button) findViewById(R.id.start1);
+            start1.setText(textOfStart1);
+
+            textOfIntervalReset1 = savedInstanceState.getString("textOfIntervalReset1");
+            Button interval_reset = (Button) findViewById(R.id.interval_reset);
+            interval_reset.setText(textOfIntervalReset1);
         }
 
        runTimer();
-
+/*
         ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         OnCheckedChangeListener toogleListen = new OnCheckedChangeListener() {
             @Override
@@ -67,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         toggleButton.setOnCheckedChangeListener(toogleListen);
-
+*/
 //передаем параметры в внешний метод и запускаем его
         /*
         RunTimer xyz = new RunTimer();
@@ -88,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // получим идентификатор выбранного пункта меню
-        //int id_item = item.getItemId();
-        //MenuItem infoTextView = findViewById(R.id.id_item);
         switch(item.getItemId()) {
             case R.id.two_stopwatch: {
                 Intent intent = new Intent(MainActivity.this, Two_chrono.class);
@@ -107,7 +113,62 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
             }
         }
+    }
 
+    public void start1 (View view) {
+        Button start1 = (Button) findViewById(R.id.start1);
+        Button interval_reset = (Button) findViewById(R.id.interval_reset);
+        if (running==false) {
+            running = true;
+            start1.setText("Пауза");
+            textOfStart1 = "Пауза";
+            interval_reset.setText("Интервал");
+            textOfIntervalReset1 = "Интервал";
+
+            interval_reset.setClickable(true);
+        } else {
+            running = false;
+            start1.setText("Старт");
+            textOfStart1 = "Старт";
+            interval_reset.setText("Сброс");
+            textOfIntervalReset1 = "Сброс";
+        }
+    }
+
+    public void makeIntervalOrReset1 (View view) {
+        Button interval_reset = (Button) findViewById(R.id.interval_reset);
+        if (running==true) {
+            interval_reset.setText("Интервал");
+            textOfIntervalReset1 = "Интервал";
+
+            numberOfInterval++;
+            TextView for_interval = (TextView) findViewById(R.id.for_interval);
+            timeOfInterval =  secondsInterval - prevTotalTime;
+            prevTotalTime = secondsInterval;
+
+            int hours2 = timeOfInterval/3600;
+            int minutes2 = (timeOfInterval%3600)/60;
+            int secs2 = timeOfInterval%60;
+            String time2 = String.format(Locale.getDefault(), "%d:%02d: %02d", hours2, minutes2, secs2);
+
+            intervals =  intervals + numberOfInterval + "         " + time2 + "       " + interval_str + "\n";
+            for_interval.setText(intervals);
+            for_interval.setMovementMethod(new ScrollingMovementMethod());
+
+        } else {
+            interval_reset.setText("Сброс");
+            interval_reset.setClickable(false);
+            textOfIntervalReset1 = "Сброс";
+
+            running = false;
+            seconds = 0;
+            intervals = "Круг" + " " + "Время круга" + " " + "Общее время" + "\n";
+            numberOfInterval = 0;
+            timeOfInterval = 0;
+            prevTotalTime = 0;
+            TextView for_interval = (TextView) findViewById(R.id.for_interval);
+            for_interval.setText(null);
+        }
     }
 
     // реализация секундомера
@@ -132,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // метод для создания интервалов
+    /*
     public void make_interval (View view) {
         numberOfInterval++;
         TextView for_interval = (TextView) findViewById(R.id.for_interval);
@@ -160,16 +223,9 @@ public class MainActivity extends AppCompatActivity {
         for_interval.setText(null);
     }
 
+*/
 
-    public void goTwo(View view) {
-        Intent intent = new Intent(MainActivity.this, Two_chrono.class);
-        startActivity(intent);
-    }
 
-    public void goThree(View view) {
-        Intent intent = new Intent(MainActivity.this, Three_chrono.class);
-        startActivity(intent);
-    }
 
     //@Override
     public void onSaveInstanceState (Bundle SaveInstanceState) {
@@ -181,6 +237,8 @@ public class MainActivity extends AppCompatActivity {
         SaveInstanceState.putInt("secondsInterval", secondsInterval);
         SaveInstanceState.putInt("timeOfInterval", timeOfInterval);
         SaveInstanceState.putInt("prevTotalTime", prevTotalTime);
+        SaveInstanceState.putString("textOfStart1", textOfStart1);
+        SaveInstanceState.putString("textOfIntervalReset1", textOfIntervalReset1);
     }
 
 }

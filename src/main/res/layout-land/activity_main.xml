@@ -6,49 +6,19 @@
     android:layout_height="match_parent">
 
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="ToggleButton"
-        android:textOff="Старт"
-        android:textOn="Пауза"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.111" />
-
     <Button
-        android:id="@+id/two_chrono"
+        android:id="@+id/interval_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="goTwo"
-        android:text="два секундомера"
+        android:clickable="false"
+        android:onClick="makeIntervalOrReset1"
+        android:text="интервал"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.827"
+        app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
-
-    <Button
-        android:id="@+id/reset"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.701"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="resetChrono"
-        android:text="Сброс"
-        tools:layout_editor_absoluteX="544dp"
-        tools:layout_editor_absoluteY="156dp" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <TextView
         android:id="@+id/textView"
@@ -64,7 +34,7 @@
         app:layout_constraintVertical_bias="0.127" />
 
     <Button
-        android:id="@+id/interval"
+        android:id="@+id/start1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.72"
@@ -73,8 +43,8 @@
         app:layout_constraintVertical_bias="0.316"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="make_interval"
-        android:text="Интервал"
+        android:onClick="start1"
+        android:text="Старт"
         tools:layout_editor_absoluteX="516dp"
         tools:layout_editor_absoluteY="74dp" />
 
