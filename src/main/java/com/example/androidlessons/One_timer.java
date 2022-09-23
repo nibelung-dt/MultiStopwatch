@@ -3,6 +3,7 @@ package com.example.androidlessons;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,16 +31,16 @@ import java.util.Locale;
 
 public class One_timer extends AppCompatActivity {
 
-    private static final int NOTIFY_ID = 101;
-    private static String CHANNEL_ID = "Cat channel";
 
     private int seconds7;
     private Boolean running7 = false;
+    private Boolean wasStart = false;
 
     private String hours = "0";
     private String minutes = "0";
     private String seconds = "0";
 
+    private NotificationManagerCompat notificationManagerCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,31 +51,30 @@ public class One_timer extends AppCompatActivity {
         runTimerDown();
 
         //уведомления
-        Button button = findViewById(R.id.button);
+        /*Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNotification();
+                sendOnChannel();
             }
         });
-
+        */
+        this.notificationManagerCompat = NotificationManagerCompat.from(this);
     }
 
-    private void addNotification() {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+    // создаем уведомление и его отправка
+    private void sendOnChannel()  {
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
+        Notification notification = new NotificationCompat.Builder(this, NotificationApp.CHANNEL_ID_1)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Таймер 1")
+                .setContentText("Время вышло!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
 
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
+        int notificationId = 1;
+        this.notificationManagerCompat.notify(notificationId, notification);
     }
 
 
@@ -84,9 +84,12 @@ public class One_timer extends AppCompatActivity {
         EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
         EditText editTextTime2 = (EditText) findViewById(R.id.editTextTime2);
         EditText editTextTime3 = (EditText) findViewById(R.id.editTextTime3);
-        hours =  editTextTime.getText().toString();
-        minutes =  editTextTime2.getText().toString();
-        seconds =  editTextTime3.getText().toString();
+
+            hours =  editTextTime.getText().toString();
+            minutes =  editTextTime2.getText().toString();
+            seconds =  editTextTime3.getText().toString();
+
+
         TextView textView8 = (TextView) findViewById(R.id.textView8);
         textView8.setText(hours + ":" + minutes + ":" + seconds);
 
@@ -104,7 +107,7 @@ public class One_timer extends AppCompatActivity {
         editTextTime2.setVisibility(View.INVISIBLE);
         editTextTime3.setVisibility(View.INVISIBLE);
 
-
+        wasStart = true;
 
     }
 
@@ -130,6 +133,11 @@ public class One_timer extends AppCompatActivity {
                 } else {
                     running7 = false;
                     seconds7 = 0;
+                    if (wasStart==true) {
+                        sendOnChannel();
+                        wasStart=false;
+                    }
+
                 }
                 handler.postDelayed(this, 1000);
             }
