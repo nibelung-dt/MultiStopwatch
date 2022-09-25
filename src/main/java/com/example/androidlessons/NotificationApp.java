@@ -27,6 +27,9 @@ public class NotificationApp extends Application {
         this.createNotificationChannels();
     }
 
+
+
+
     private void createNotificationChannels() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
@@ -40,4 +43,7 @@ public class NotificationApp extends Application {
             manager.createNotificationChannel(channel1);
         }
     }
+
+
+
 }
