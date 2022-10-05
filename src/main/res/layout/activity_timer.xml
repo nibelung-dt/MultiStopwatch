@@ -10,12 +10,14 @@
         android:id="@+id/enter_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Старт"
         android:onClick="start_timer"
+        android:text="Старт"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.665"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.468" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -95,16 +97,17 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/reset_timer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:onClick="reset_timer1"
+        android:text="Отмена"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintHorizontal_bias="0.277"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintVertical_bias="0.468" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
