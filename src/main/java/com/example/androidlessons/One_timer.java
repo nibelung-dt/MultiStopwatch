@@ -39,16 +39,19 @@ public class One_timer extends AppCompatActivity {
     //private TextView textView7 = (TextView) findViewById(R.id.textView7);
 
     private int seconds7;
+    private int seconds7_temp = 0;
+    private String time_str = "";
     private Boolean running7 = false;
-    private Boolean wasStart = false;
+
     private Boolean clickedReset = false;
+    private Boolean wasStart = false;
     private Boolean clickedPause = false;
 
     private String hours = "0";
     private String minutes = "0";
     private String seconds = "0";
 
-    private int times = 1;
+    private int times = 1; //нужно для уведомлений
 
     private NotificationManagerCompat notificationManagerCompat;
 
@@ -58,6 +61,27 @@ public class One_timer extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (savedInstanceState != null) {
+            seconds7 = savedInstanceState.getInt("seconds7");
+            seconds7_temp = savedInstanceState.getInt("seconds7_temp");
+            running7 = savedInstanceState.getBoolean("running7");
+            time_str = savedInstanceState.getString("time_str");
+
+
+            TextView textView7 = (TextView) findViewById(R.id.textView7);
+            Button enter_time = (Button) findViewById(R.id.enter_time);
+            EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
+            EditText editTextTime2 = (EditText) findViewById(R.id.editTextTime2);
+            EditText editTextTime3 = (EditText) findViewById(R.id.editTextTime3);
+            textView7.setText(time_str);
+            textView7.setVisibility(savedInstanceState.getInt("view7_status"));
+            editTextTime.setVisibility(savedInstanceState.getInt("edit_status"));
+            editTextTime2.setVisibility(savedInstanceState.getInt("edit_status2"));
+            editTextTime3.setVisibility(savedInstanceState.getInt("edit_status3"));
+            enter_time.setText(savedInstanceState.getCharSequence("enter_status"));
+
+        }
         runTimerDown();
 
         this.notificationManagerCompat = NotificationManagerCompat.from(this);
@@ -115,40 +139,47 @@ public class One_timer extends AppCompatActivity {
         if (running7==false) {
             running7 = true;
             enter_time.setText("Пауза");
+            //seconds7 = seconds7_temp;
+            if (seconds7_temp == 0) {
+                hours = editTextTime.getText().toString();
+                minutes = editTextTime2.getText().toString();
+                seconds = editTextTime3.getText().toString();
 
-            hours = editTextTime.getText().toString();
-            minutes = editTextTime2.getText().toString();
-            seconds = editTextTime3.getText().toString();
+                //  TextView textView8 = (TextView) findViewById(R.id.textView8);
+                // textView8.setText(hours + ":" + minutes + ":" + seconds);
 
+                int hours2 = Integer.parseInt(hours);
+                int seconds11 = hours2 * 3600;
 
-            //  TextView textView8 = (TextView) findViewById(R.id.textView8);
-            // textView8.setText(hours + ":" + minutes + ":" + seconds);
+                int minutes2 = Integer.parseInt(minutes);
+                int seconds22 = minutes2 * 60;
 
-            int hours2 = Integer.parseInt(hours);
-            int seconds11 = hours2 * 3600;
+                int seconds2 = Integer.parseInt(seconds);
+                //int seconds33 = seconds2 * 60;
+                seconds7 = seconds11 + seconds22 + seconds2;
 
-            int minutes2 = Integer.parseInt(minutes);
-            int seconds22 = minutes2 * 60;
+                editTextTime.setVisibility(View.INVISIBLE);
+                editTextTime2.setVisibility(View.INVISIBLE);
+                editTextTime3.setVisibility(View.INVISIBLE);
+            } else {
+                seconds7 = seconds7_temp;
+            }
 
-            int seconds2 = Integer.parseInt(seconds);
-            //int seconds33 = seconds2 * 60;
-            seconds7 = seconds11 + seconds22 + seconds2;
-
-            editTextTime.setVisibility(View.INVISIBLE);
-            editTextTime2.setVisibility(View.INVISIBLE);
-            editTextTime3.setVisibility(View.INVISIBLE);
-
-            wasStart = true;
+            //wasStart = true;
         } else {
             running7 = false;
             clickedPause = true;
+            enter_time.setText("Старт");
+
+
         }
     }
 
     public void reset_timer1 (View view) {
         running7 = false;
         seconds7 = 0;
-        wasStart=true;
+        seconds7_temp = 0;
+       // wasStart=true;
         clickedReset=true;
 
         EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
@@ -184,17 +215,38 @@ public class One_timer extends AppCompatActivity {
                 int secs = seconds7%60;
                 String time = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, secs);
                // String time = Integer.toString(seconds7);
-                textView7.setText(time);
 
                 if (running7 && seconds7 != 0) {
                     seconds7--;
+                    seconds7_temp = seconds7;
+                    time_str = time;
+                    textView7.setText(time);
                     textView7.setVisibility(View.VISIBLE);
                 }
-                if (running7 == false && wasStart==true && clickedReset==false) {
+                //время истекло
+                if (running7==true && seconds7 == 0) {
+                    running7 = false;
+                    seconds7 = 0;
+                    times = 1;
+                    seconds7_temp = 0;
+                    handler2();
+
+                    textView7.setVisibility(View.INVISIBLE);
+                    editTextTime.setVisibility(View.VISIBLE);
+                    editTextTime2.setVisibility(View.VISIBLE);
+                    editTextTime3.setVisibility(View.VISIBLE);
+                    editTextTime.setText("00");
+                    editTextTime2.setText("00");
+                    editTextTime3.setText("00");
+                    enter_time.setText("Старт");
+                }
+
+                //пользователь нажал кнопку "отмена"
+                if (running7 == false && clickedReset == true) {
                         //sendOnChannel();
-                        seconds7 = 0;
+                        clickedReset = false;
                         times = 1;
-                        handler2();
+                        //handler2();
                         wasStart=false;
                         textView7.setVisibility(View.INVISIBLE);
                         editTextTime.setVisibility(View.VISIBLE);
@@ -204,14 +256,8 @@ public class One_timer extends AppCompatActivity {
                         editTextTime2.setText("00");
                         editTextTime3.setText("00");
                         enter_time.setText("Старт");
-                    } if (running7 == false && wasStart==true && clickedReset==true) {
-                        seconds7 = 0;
-                        times = 1;
-                        wasStart=false;
-                        clickedReset=true;
-                        textView7.setVisibility(View.INVISIBLE);
-                    } if (running7 == false && wasStart==true && clickedPause == true) {
-                        clickedPause = false;
+
+
                     }
 
 
@@ -221,5 +267,29 @@ public class One_timer extends AppCompatActivity {
 
     }
 
+    public void onSaveInstanceState (Bundle SaveInstanceState) {
+        super.onSaveInstanceState(SaveInstanceState);
+        SaveInstanceState.putInt("seconds7", seconds7);
+        SaveInstanceState.putInt("seconds7_temp", seconds7_temp);
+        SaveInstanceState.putBoolean("running7", running7);
+        SaveInstanceState.putString("time_str", time_str);
 
+        Button enter_time = (Button) findViewById(R.id.enter_time);
+        TextView textView7 = (TextView) findViewById(R.id.textView7);
+        EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
+        EditText editTextTime2 = (EditText) findViewById(R.id.editTextTime2);
+        EditText editTextTime3 = (EditText) findViewById(R.id.editTextTime3);
+
+        int view7_status = textView7.getVisibility();
+        int edit_status = editTextTime.getVisibility();
+        int edit_status2 = editTextTime2.getVisibility();
+        int edit_status3 = editTextTime3.getVisibility();
+        CharSequence enter_status = enter_time.getText();
+        SaveInstanceState.putInt("view7_status", view7_status);
+        SaveInstanceState.putInt("edit_status", edit_status);
+        SaveInstanceState.putInt("edit_status2", edit_status2);
+        SaveInstanceState.putInt("edit_status3", edit_status3);
+        SaveInstanceState.putCharSequence("enter_status", enter_status);
+
+    }
 }
